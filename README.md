@@ -3,7 +3,7 @@ Questa è una guida che spiega come è stato implementato il meccanismo di alert
 Il meccanismo è stato ideato prendendo spunto da questa pagina sulla documentazione ufficiale di Splunk https://docs.splunk.com/Documentation/MLApp/5.4.1/User/Anomalydetectiondashboard
 
 ## Prerequisiti
-Per far funzionare il meccanismo occorre aver installato sul search head gli addons "Splunk Machine Learning Toolkit (MLTK)" e "Python for Scientific Computing (PSC)"
+Per far funzionare il meccanismo occorre aver installato sul search head gli addons `Splunk Machine Learning Toolkit (MLTK)` e `Python for Scientific Computing (PSC)`
 
 ## Funzionamento in breve
 Per ogni indice Splunk monitorato sono definiti i seguenti elementi:
@@ -25,3 +25,13 @@ Per ogni indice Splunk monitorato sono definiti i seguenti elementi:
 | fields _time count hour weekday_num is_holiday
 | fit RandomForestRegressor count from hour is_holiday weekday_num into app:log_continuity_X as predicted
 ```
+- Earliest time: `-30d@d`
+- Latest time: `@d`
+- Schedule: `0 0 * * *`
+
+La search calcola il numero di eventi avuti sull'indice ogni ora negli ultimi 30 giorni. Viene allenato il modello `log_continuity_X` con l'algoritmo `RandomForestRegressor` usando come parametri l'ora in cui è stato calcolato il numero di eventi, un indicatore che suggerisce se il giorno è festivo oppure no e il giorno della settimana. Viene indicato al modello di predirre il campo `count`.
+
+Il modello è allenato tutti i giorni sui 30 giorni precedenti, quindi è in grado di adattarsi ad eventuali cambi permanenti sull'andamento del numero di eventi nell'indice: 
+
+![alt text](https://github.com/baltornat/log_continuity_docs/blob/main/log_continuity.png?raw=true)
+
