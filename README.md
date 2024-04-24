@@ -85,5 +85,10 @@ Ricapitolando:
 
 ## Dashboard di investigazione
 Per poter investigare eventuali problematiche è stata realizzata una dashboard che contiene i seguenti elementi visuali:
+![alt text](https://github.com/baltornat/log_continuity_docs/blob/main/z_score_example.png?raw=true)
 
+La tabella mostra l'andamento delle misurazioni sull'indice.
 
+![alt text](https://github.com/baltornat/log_continuity_docs/blob/main/outlier_chart.png?raw=true)
+
+Il grafico permette di verificare la presenza di valori "outlier" nello storico delle misurazioni sull'indice.  
