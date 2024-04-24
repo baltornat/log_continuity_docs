@@ -12,7 +12,9 @@ Per ogni indice Splunk monitorato sono definiti i seguenti elementi:
 - Un alert che ogni ora calcola il numero di eventi che sono stati inseriti nell'indice in quell'ora e che, applicando il modello, verifica quanto la predizione sia distante dal numero calcolato
 - Una lookup table che mantiene uno storico con granularità oraria delle predizioni e dei conteggi di eventi per quell'indice
 
-## Report - [MOV][Log Continuity] - Model Training index X
+## Analisi delle componenti
+
+### Report - [MOV][Log Continuity] - Model Training index X
 ```
 | tstats `summariesonly` count where index=X groupby _time span=1h
 | timechart span=1h sum(count) as count
@@ -36,7 +38,7 @@ Il modello si allena ogni giorno sui 30 giorni precedenti, quindi è in grado di
 
 Il modello risulta inoltre sensibile ai trend giornalieri (giorno/notte/weekend/non-weekend) e alle festività (giorno-festivo/non-festivo).
 
-## Alert - [MOV][Log Continuity] - Populate log continuity lookup index X
+### Alert - [MOV][Log Continuity] - Populate log continuity lookup index X
 ```
 | makeresults
 | eval _time=relative_time(now(), "-1h@h"), count=0, index=X
@@ -78,7 +80,10 @@ L'alert ha molteplici funzioni:
 Ricapitolando:
 ![alt text](https://github.com/baltornat/log_continuity_docs/blob/main/log_continuity.png?raw=true)
 
-## Lookup - log_continuity_X.csv
+### Lookup - log_continuity_X.csv
+![alt text](https://github.com/baltornat/log_continuity_docs/blob/main/lookup_example.png?raw=true)
 
+## Dashboard di investigazione
+Per poter investigare eventuali problematiche è stata realizzata una dashboard che contiene i seguenti elementi visuali:
 
 
